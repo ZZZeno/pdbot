@@ -61,3 +61,5 @@ config.ini
 tokens
 pixiv_history
 danbooru_history
+.idea/
+*~
