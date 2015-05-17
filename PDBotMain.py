@@ -90,8 +90,22 @@ p_start_page = int(config['PIXIV']['START_PAGE'])
 p_end_page = int(config['PIXIV']['END_PAGE'])
 p_min_fav = int(config['PIXIV']['MIN_FAV'])
 api = TwProxyGetAuth.init_oauth(username, password, ck, cs)
-p_opener = get_pixiv_opener(p_username, p_password)
-p_id_list = get_pivix_list(p_opener, p_tag, p_start_page, p_end_page, p_min_fav)
+p_id_list = []
+try:
+    f_list = open('pixiv_list', 'r')
+except FileNotFoundError:
+    f_list = open('pixiv_list', 'w')
+    json.dump(p_id_list, f_list)
+    f_list.close()
+    f_list = open('pixiv_list', 'r')
+p_id_list = json.load(f_list)
+f_list.close()
+if len(p_id_list) < 5:
+    p_opener = get_pixiv_opener(p_username, p_password)
+    p_id_list = get_pivix_list(p_opener, p_tag, p_start_page, p_end_page, p_min_fav)
+    f_list = open('pixiv_list', 'w')
+    json.dump(p_id_list, f_list)
+    f_list.close()
 while len(p_id_list) > 0:
     while not pick_a_pic_from_pixiv(api, p_id_list):
         pass
