@@ -22,7 +22,7 @@ def init_oauth(username, password, consumer_key, consumer_secret):
     """
 
     config = configparser.ConfigParser()
-    config.read('config.ini')
+    config.read('config.ini', encoding='utf-8')
     access_token = ""
     access_token_secret = ""
     auth = tweepy.OAuthHandler(consumer_key, consumer_secret)

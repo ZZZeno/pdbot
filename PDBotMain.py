@@ -79,7 +79,7 @@ def pick_a_pic_from_pixiv(twitter_api: tweepy.API, id_list):
 
 
 config = configparser.ConfigParser()
-config.read('config.ini')
+config.read('config.ini', encoding='utf-8')
 username = config['TWITTER']['USERNAME']
 password = config['TWITTER']['PASSWORD']
 ck = config['TWITTER']['CONSUMER_KEY']
