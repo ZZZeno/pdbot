@@ -21,7 +21,7 @@ def get_pixiv_opener(pixiv_username, pixiv_password):
     return pixiv_opener
 
 
-def get_pivix_list(pixiv_opener, tag: str, start_page: int, end_page: int, min_fav: int):
+def get_pivix_list(pixiv_opener, tag: str, start_page: int, end_page: int, min_fav: int, delay: int):
     """
     获取图片ID列表
     :param pixiv_opener: opener
@@ -29,12 +29,13 @@ def get_pivix_list(pixiv_opener, tag: str, start_page: int, end_page: int, min_f
     :param start_page: 开始页数
     :param end_page: 终止页数
     :param min_fav: 收藏数阀值
+    :param delay: 页面间处理延时
     :return:图片ID列表
     """
     tag = urllib.parse.quote(tag)
     rank_list = PixivRankedPicID.RankList(pixiv_opener, 'http://www.pixiv.net/search.php?s_mode=s_tag_full&'
                                                         'word='+tag+'&order=date_d&p={0}')
-    pixiv_id_list = rank_list.open_page(start_page, end_page, min_fav)
+    pixiv_id_list = rank_list.open_page(start_page, end_page, min_fav, delay)
     return pixiv_id_list
 
 
@@ -89,7 +90,9 @@ p_tag = config['PIXIV']['TAG']
 p_start_page = int(config['PIXIV']['START_PAGE'])
 p_end_page = int(config['PIXIV']['END_PAGE'])
 p_min_fav = int(config['PIXIV']['MIN_FAV'])
+p_delay_time = int(config['PIXIV']['DELAY'])
 api = TwProxyGetAuth.init_oauth(username, password, ck, cs)
+p_opener = get_pixiv_opener(p_username, p_password)
 p_id_list = []
 try:
     f_list = open('pixiv_list', 'r')
@@ -101,8 +104,7 @@ except FileNotFoundError:
 p_id_list = json.load(f_list)
 f_list.close()
 if len(p_id_list) < 5:
-    p_opener = get_pixiv_opener(p_username, p_password)
-    p_id_list = get_pivix_list(p_opener, p_tag, p_start_page, p_end_page, p_min_fav)
+    p_id_list = get_pivix_list(p_opener, p_tag, p_start_page, p_end_page, p_min_fav, p_delay_time)
     f_list = open('pixiv_list', 'w')
     json.dump(p_id_list, f_list)
     f_list.close()

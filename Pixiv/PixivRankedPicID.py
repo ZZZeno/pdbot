@@ -1,5 +1,6 @@
 __author__ = 'g'
 import re
+import time
 
 
 class RankList:
@@ -12,12 +13,13 @@ class RankList:
         self.baseurl = baseurl
         self.opener = opener
 
-    def open_page(self, start_page, end_page, minfav):
+    def open_page(self, start_page, end_page, minfav, delay: int):
         """
         打开排行榜，获取页面内图片ID
         :param start_page:开始页数
         :param end_page:终止页数
         :param minfav:收藏数阀值
+        :param delay:页面间处理延时
         :return:图片ID列表
         """
         id_list = []
@@ -32,4 +34,5 @@ class RankList:
             for j in data:
                 if int(j[1]) > minfav:
                     id_list.append(j)
+            time.sleep(delay)
         return id_list
