@@ -56,7 +56,7 @@ docs/_build/
 # PyBuilder
 target/
 
-#My configure
+# My configure
 config.ini
 tokens
 pixiv_history
