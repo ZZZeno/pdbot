@@ -54,5 +54,5 @@ def init_oauth(username, password, consumer_key, consumer_secret):
         auth.set_access_token(access_token, access_token_secret)
 
     api = tweepy.API(auth)
-    print('Auth succeeded！')
+    print('Auth succeeded')
     return api
