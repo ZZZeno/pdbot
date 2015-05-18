@@ -97,6 +97,7 @@ p_start_page = int(config['PIXIV']['START_PAGE'])
 p_end_page = int(config['PIXIV']['END_PAGE'])
 p_min_fav = int(config['PIXIV']['MIN_FAV'])
 p_delay_time = int(config['PIXIV']['DELAY'])
+sleep_time = int(config['GENERAL']['SLEEP_TIME'])
 api = TwProxyGetAuth.init_oauth(username, password, ck, cs)
 p_opener = get_pixiv_opener(p_username, p_password)
 p_id_list = []
@@ -117,4 +118,4 @@ if len(p_id_list) < 5:
 while len(p_id_list) > 0:
     while not pick_a_pic_from_pixiv(api, p_id_list):
         pass
-    time.sleep(1200)
+    time.sleep(sleep_time)
