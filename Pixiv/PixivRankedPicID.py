@@ -14,9 +14,11 @@ def open_page(opener: urllib.request.OpenerDirector, base_url: str,
     id_list = []
     pattern1 = re.compile('illust_id=(\d+)" class="bookmark-count _ui-tooltip" data-tooltip="(\d+).+?"><i class=')
     for i in range(start_page, end_page+1):
-        response = opener.open(base_url.format(i))
-        if response.getcode() != 200:
-            break
+        try:
+            response = opener.open(base_url.format(i))
+        except urllib.request.HTTPError as e:
+            print('Page {0}:'.format(i)+e)
+            continue
         res = str(response.read(), encoding='utf-8')
         print('page {0}'.format(i))
         data = pattern1.findall(res)
