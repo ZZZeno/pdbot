@@ -86,4 +86,5 @@ p_id_list = check_pixiv_list(p_opener, p_tag, p_start_page, p_end_page, p_min_fa
 while 1:
     while not pick_a_pic_from_pixiv(api, p_id_list):
         pass
+    p_id_list = check_pixiv_list(p_opener, p_tag, p_start_page, p_end_page, p_min_fav, p_delay_time)
     time.sleep(sleep_time)
