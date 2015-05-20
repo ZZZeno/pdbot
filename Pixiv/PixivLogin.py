@@ -19,5 +19,10 @@ def login_pixiv(username: str, password: str):
     }).encode('utf-8')
     cookie_jar = http.cookiejar.CookieJar()
     opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(cookie_jar))
-    opener.open(url, form_data)
+    try:
+        opener.open(url, form_data)
+    except urllib.request.HTTPError as e:
+        print(e.reason)
+        print('Network error.')
+        exit(0)
     return opener

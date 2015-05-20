@@ -18,15 +18,26 @@ def download_from_url(opener: urllib.request.OpenerDirector, pic_id: str):
     """
     url = transform_id_to_url(pic_id)
     opener.addheaders = [('Referer', url)]
-    res = str(opener.open(url).read(), encoding='utf-8')
+    try:
+        res = str(opener.open(url).read(), encoding='utf-8')
+    except urllib.request.HTTPError as e:
+        print(e.reason)
+        print('Please check your username and password.')
+        return None
     pt = re.compile('data-src="(.+?)" class="original-image"')
     pdata = pt.findall(res)
     if len(pdata) == 0:
         print('pic not found')
         return
     print('downloading')
+    try:
+        pic_data = opener.open(pdata[0]).read()
+    except urllib.request.HTTPError as e:
+        print(e.reason)
+        print('Cannot download this picture!')
+        return None
     f = open('/tmp/{1}.{0}'.format(pdata[0].split('.')[-1], pic_id), 'wb')
-    f.write(opener.open(pdata[0]).read())
+    f.write(pic_data)
     f.close()
     print('downloaded')
     return '/tmp/{1}.{0}'.format(pdata[0].split('.')[-1], pic_id)

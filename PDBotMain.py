@@ -39,8 +39,12 @@ def pick_a_pic_from_pixiv(twitter_api: tweepy.API, id_list):
     file_name = PixivPicDownloader.download_from_url(p_opener, id_list[pick][0])
     print(file_name)
     if file_name is not None:
-        twitter_api.update_with_media(filename=file_name,
+        try:
+            twitter_api.update_with_media(filename=file_name,
                                       status=PixivPicDownloader.transform_id_to_url(id_list[pick][0]))
+        except tweepy.TweepError as e:
+            print(e.reason)
+            return False
         print('tweet sent!')
         return True
     else:
