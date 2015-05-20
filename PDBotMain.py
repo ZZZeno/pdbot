@@ -20,7 +20,11 @@ def pick_a_pic_from_pixiv(twitter_api: tweepy.API, id_list):
     f = open('pixiv_history', 'r')
     history = json.load(f)
     f.close()
-    pick = random.randint(0, len(id_list) - 1)
+    try:
+        pick = random.randint(0, len(id_list) - 1)
+    except Exception as e:
+        print(e)
+        return False
     while id_list[pick][0] in history:
         id_list.remove(id_list[pick])
         f = open('pixiv_list', 'w')
@@ -85,6 +89,6 @@ p_opener = PixivLogin.login_pixiv(p_username, p_password)
 p_id_list = check_pixiv_list(p_opener, p_tag, p_start_page, p_end_page, p_min_fav, p_delay_time)
 while 1:
     while not pick_a_pic_from_pixiv(api, p_id_list):
+        p_id_list = check_pixiv_list(p_opener, p_tag, p_start_page, p_end_page, p_min_fav, p_delay_time)
         pass
-    p_id_list = check_pixiv_list(p_opener, p_tag, p_start_page, p_end_page, p_min_fav, p_delay_time)
     time.sleep(sleep_time)
