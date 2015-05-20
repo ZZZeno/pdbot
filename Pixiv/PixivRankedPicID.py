@@ -1,38 +1,27 @@
 __author__ = 'g'
 import re
 import time
+import urllib.request
 
 
-class RankList:
-    def __init__(self, opener, baseurl):
-        """
-        :param opener:登录器
-        :param baseurl:排行榜格式化字符串
-        :return:None
-        """
-        self.baseurl = baseurl
-        self.opener = opener
-
-    def open_page(self, start_page, end_page, minfav, delay: int):
-        """
-        打开排行榜，获取页面内图片ID
-        :param start_page:开始页数
-        :param end_page:终止页数
-        :param minfav:收藏数阀值
-        :param delay:页面间处理延时
-        :return:图片ID列表
-        """
-        id_list = []
-        pattern1 = re.compile('illust_id=(\d+)" class="bookmark-count _ui-tooltip" data-tooltip="(\d+).+?"><i class=')
-        for i in range(start_page, end_page+1):
-            response = self.opener.open(self.baseurl.format(i))
-            if response.getcode() != 200:
-                break
-            res = str(response.read(), encoding='utf-8')
-            print('page {0}'.format(i))
-            data = pattern1.findall(res)
-            for j in data:
-                if int(j[1]) > minfav:
-                    id_list.append(j)
-            time.sleep(delay)
-        return id_list
+def open_page(opener: urllib.request.OpenerDirector, base_url: str,
+              start_page: int, end_page: int, min_fav: int, delay: int):
+    """
+    打开排行榜，获取页面内收藏数大于阀值的图片ID所构成的列表
+    :param base_url: 排行榜地址（页面参数格式化）
+    :return: 元素为[图片ID,收藏数]的列表
+    """
+    id_list = []
+    pattern1 = re.compile('illust_id=(\d+)" class="bookmark-count _ui-tooltip" data-tooltip="(\d+).+?"><i class=')
+    for i in range(start_page, end_page+1):
+        response = opener.open(base_url.format(i))
+        if response.getcode() != 200:
+            break
+        res = str(response.read(), encoding='utf-8')
+        print('page {0}'.format(i))
+        data = pattern1.findall(res)
+        for j in data:
+            if int(j[1]) > min_fav:
+                id_list.append(j)
+        time.sleep(delay)
+    return id_list
