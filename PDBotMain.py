@@ -32,7 +32,7 @@ def pick_a_pic_from_pixiv(twitter_api: tweepy.API, id_list):
         f.close()
         if len(id_list) == 0:
             print('Pictures all sent!')
-            exit(0)
+            return False
         pick = random.randint(0, len(id_list) - 1)
     print(id_list[pick])
     history.append(id_list[pick][0])
