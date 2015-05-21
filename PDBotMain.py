@@ -34,13 +34,17 @@ def pick_a_pic_from_pixiv(twitter_api: tweepy.API, id_list):
             print('Pictures all sent!')
             return False
         pick = random.randint(0, len(id_list) - 1)
-    print(id_list[pick])
+    dl_pic = id_list[pick]
+    print(dl_pic)
     history.append(id_list[pick][0])
     id_list.remove(id_list[pick])
     f = open('pixiv_history', 'w')
     json.dump(history, f)
     f.close()
-    file_name = PixivPicDownloader.download_from_url(p_opener, id_list[pick][0])
+    f = open('pixiv_list', 'w')
+    json.dump(id_list, f)
+    f.close()
+    file_name = PixivPicDownloader.download_from_url(p_opener, dl_pic[0])
     print(file_name)
     if file_name is not None:
         try:
