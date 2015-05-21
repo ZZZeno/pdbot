@@ -27,9 +27,6 @@ def pick_a_pic_from_pixiv(twitter_api: tweepy.API, id_list):
         return False
     while id_list[pick][0] in history:
         id_list.remove(id_list[pick])
-        f = open('pixiv_list', 'w')
-        json.dump(id_list, f)
-        f.close()
         if len(id_list) == 0:
             print('Pictures all sent!')
             return False
