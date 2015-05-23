@@ -1,6 +1,7 @@
 # pdbot
-Pixiv &amp; Danbooru picture sharing bot on Twitter.
+Pixiv <del>&amp; Danbooru</del> picture sharing bot on Twitter.
 ## TODO:
-- Danbooru module
+- let user be able to change the search tag when the bot is running
+- <del>Danbooru module</del>
 - <del>history recording</del>
 - <del>exception handler</del>
