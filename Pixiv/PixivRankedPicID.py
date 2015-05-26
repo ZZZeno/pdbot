@@ -16,8 +16,8 @@ def open_page(opener: urllib.request.OpenerDirector, base_url: str,
     for i in range(start_page, end_page+1):
         try:
             response = opener.open(base_url.format(i))
-        except Exception as e:
-            print('Page {0}:'.format(i)+e)
+        except Exception:
+            print('Error on opening page {0}'.format(i))
             continue
         res = str(response.read(), encoding='utf-8')
         print('page {0}'.format(i))
